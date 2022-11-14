@@ -1,0 +1,14 @@
+---
+# For Debian and Ubuntu distros
+- name: add Datastax repository key
+  apt_key:
+    url: https://debian.datastax.com/debian/repo_key
+    state: present
+
+- name: Add the DataStax repository
+  apt_repository:
+    description: Datastax Repo for Datastax Enterprise
+    repo: 'deb https://debian.datastax.com/enterprise/ stable main'
+    state: present
+    filename: datastax
+    update_cache: yes

@@ -1,0 +1,44 @@
+---
+- name: "Installing VIM"
+  apt: pkg=vim state=installed
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+- name: "Installing Git"
+  apt: pkg=git state=installed
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+- name: "Installing nginx"
+  apt: pkg=nginx state=installed
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+- name: "Installing additional software"
+  apt: pkg={{ item }} state=installed
+  with_items:
+  - dnsutils
+  - ntp
+  - lvm2
+  - at
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+- name: Install Vim
+  yum:
+    name: vim
+    state: installed
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat'
+
+- name: Install Git
+  yum:
+    name: git
+    state: installed
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat'
+
+- name: Installing additional software
+  yum:
+    name: "{{ item }}"
+    state: installed
+  with_items:
+  - bind-utils
+  - ntp
+  - lvm2
+  - at
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat'

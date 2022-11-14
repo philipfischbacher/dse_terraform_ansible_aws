@@ -1,0 +1,5 @@
+---
+# Print the OS distribution and installation type.
+- name: Print the OS distribution and installation type.
+  ansible.builtin.debug:
+    msg: System [{{ ansible_os_family }}] using [{{ install_type }}]  installation method.

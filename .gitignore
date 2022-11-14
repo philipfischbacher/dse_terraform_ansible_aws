@@ -10,5 +10,10 @@
 terraform/ansible/hosts
 config.tfvars
 
+# Ansible
+ansible/certs/*
+!ansible/certs/.keep  
+ansible/hosts
+
 # Vim
 .sw*

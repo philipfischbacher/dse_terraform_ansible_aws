@@ -1,0 +1,15 @@
+- name: Copy keystore
+  copy:
+    src: "{{ssl_certs_path}}/keystore.jks"
+    dest: "{{cluster_keystore_path}}"
+    owner: cassandra
+    group: cassandra
+    mode: 0644
+
+- name: Copy truststore
+  copy:
+    src: "{{ssl_certs_path}}/truststore.jks"
+    dest: "{{cluster_truststore_path}}"
+    owner: cassandra
+    group: cassandra
+    mode: 0644

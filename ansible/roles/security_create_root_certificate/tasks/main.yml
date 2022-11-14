@@ -1,0 +1,21 @@
+---
+#EXPECTS: [hosts: localhost] [become: no] [connection: local] in playbook call
+- name: Create directory to generate files
+  file:
+    path: "{{ssl_certs_path}}"
+    state: directory
+
+- name: Empty "{{ssl_certs_path}}" directory
+  shell: cd "{{ssl_certs_path}}" && find -mindepth 1 -maxdepth 1 -print0 | xargs -0 rm -rf --
+
+# https://docs.datastax.com/en/security/6.8/security/secSetUpSSLCert.html#CreatingarootCAcertificate
+# openssl req -new -x509 -nodes -subj "/CN=dse-node/OU=backup_cluster/O=datastax/C=us" -keyout dse-node.key -out dse-node.pem -days "365"
+- name: Generate self-signed root CA
+  command: >
+    openssl req -new -x509 -nodes 
+    -subj "/CN=*.dse/OU={{cluster_name}}/O=datastax/C=US" 
+    -keyout ca.key
+    -out ca.crt
+    -days "3650"
+  args:
+    chdir: "{{ssl_certs_path}}"

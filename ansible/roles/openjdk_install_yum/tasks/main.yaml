@@ -1,0 +1,9 @@
+---
+# For Centos and RHEL distros
+- name: Install OpenJDK Centos/RHEL
+  yum:
+    # Install version less than 1.8.0_332 to avoid CASSANDRA-17581
+    # https://issues.apache.org/jira/browse/CASSANDRA-17581
+    name: "{{ open_jdk_yum }}"
+    state: present
+    update_cache: yes

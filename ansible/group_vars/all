@@ -1,0 +1,64 @@
+---
+### Target/Current DSE verson
+#   - dse_ver_target:
+#     for fresh install, dse_ver_target is the version to be installed
+#     for upgrade, dse_ver_target is the version to be upgraded to
+#
+dse_ver_major: 6.7
+dse_ver_minor: 12
+dse_ver_target:  "{{ dse_ver_major }}.{{ dse_ver_minor }}"
+
+opsc_ver_target: 6.8.19
+install_type: package
+
+### Open JDK version
+# Install version less than 1.8.0_332 to avoid CASSANDRA-17581
+# https://issues.apache.org/jira/browse/CASSANDRA-17581
+open_jdk_deb: openjdk-8-jdk=1.8.0_312
+open_jdk_yum: java-1.8.0-openjdk-headless-1.8.0.312.b07-1.amzn2.0.2
+
+### DSE system file location
+#
+dse_config_dir: /etc/dse
+dse_default_dir: /etc/default
+dse_syslog_dir: /var/log/cassandra
+
+### Key cassandra.yaml settings
+#  DSE VNode setup
+#
+# default vnode token_num setting for C*
+vnode_token_num: 128
+
+## DSE cluster name and other configuration items
+#
+cluster_name: backup_cluster
+dse_data_homedir: /data
+metadata_directory: "{{ dse_data_homedir }}/metadata"
+ansible_ssh_private_key_file: [SSH_KEY]
+
+## DSE Security
+#
+ssl_certs_path: ../certs
+src_store_type: pkcs12  #pkcs12 or jks
+# Encryption settings for truststores / keystores
+#-------------------------------------------------------------------------------
+# Make sure the SSL certificates, keystores, truststores are readable by the user 
+# who runs opscenter / cassandra on target nodes
+security_owner: cassandra
+security_group: cassandra
+
+# Cluster security settings set by server_encryption_options 
+# and client_encryption_options in cassandra.yaml
+cluster_keystore_path: "{{ dse_config_dir }}/keystore.jks"
+cluster_keystore_password: "keystore_pass"
+cluster_truststore_path: "{{ dse_config_dir }}/truststore.jks"
+cluster_truststore_password: "truststore_pass"
+ 
+# Root certificate
+#-------------------------------------------------------------------------------
+# must be an account and group available on localhost
+ssl_certs_path_owner: "{{localhost_owner}}"
+ssl_certs_path_group: "{{localhost_group}}"
+
+ssl_certs_key_size: "2048"
+ssl_certs_days: "365"

@@ -1,0 +1,38 @@
+---
+- name: Install DSE
+  #yum:
+  package:
+    name:
+      - "dse-{{ dse_ver_target }}-1"
+      - "dse-full-{{ dse_ver_target }}-1"
+      - "dse-libgraph-{{ dse_ver_target }}-1"
+      - "dse-libcassandra-{{ dse_ver_target }}-1"
+      - "dse-libhadoop2-client-{{ dse_ver_target }}-1"
+      - "dse-libsolr-{{ dse_ver_target }}-1"
+      - "dse-libtomcat-{{ dse_ver_target }}-1"
+      - "dse-liblog4j-{{ dse_ver_target }}-1"
+      - "dse-libspark-{{ dse_ver_target }}-1"
+    state: present
+    update_cache: yes
+
+- name: Create directory for data
+  file:
+    path: "{{ dse_data_homedir }}/{{ item }}"
+    owner: cassandra
+    group: cassandra
+    state: directory
+  with_items:
+    - commitlog
+    - data
+    - saved_caches
+    - hints
+    - cdc_raw
+    - insights_data
+
+- name: Create directory for collectd
+  file:
+    path: "{{ dse_config_dir }}/collectd"
+    owner: cassandra
+    group: cassandra
+    state: directory
+

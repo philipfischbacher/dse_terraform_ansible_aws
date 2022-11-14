@@ -1,0 +1,11 @@
+---
+#EXPECTS: [hosts: localhost] [become: no] [connection: local] in playbook call
+- name: Import CA to a local truststore
+  java_cert:
+    cert_alias: ca
+    cert_path: "{{ssl_certs_path}}/ca.crt"
+    keystore_path: "{{ssl_certs_path}}/truststore.jks"
+    keystore_pass: "{{cluster_truststore_password}}"
+    keystore_type: JKS
+    keystore_create: yes
+    state: present

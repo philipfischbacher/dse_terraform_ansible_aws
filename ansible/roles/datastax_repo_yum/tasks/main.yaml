@@ -1,0 +1,10 @@
+---
+# For Centos and RHEL distros
+- name: Add the DataStax repository
+  yum_repository:
+    name: datastax
+    description: Datastax Repo for Datastax Enterprise
+    baseurl: https://rpm.datastax.com/enterprise
+    gpgkey: https://rpm.datastax.com/rpm/repo_key
+    enabled: yes
+    gpgcheck: no

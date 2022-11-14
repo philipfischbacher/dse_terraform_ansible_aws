@@ -1,0 +1,63 @@
+- name: Configure DSE Analytics workload type
+  when: spark_enabled|int == 1
+  lineinfile:
+    name: "{{ dse_default_dir }}/dse"
+    regexp: '^SPARK_ENABLED='
+    line: "SPARK_ENABLED=1"
+    owner: cassandra
+    group: cassandra
+    mode: 0644
+
+- name: Configure DSE Search workload type
+  when: solr_enabled|int == 1
+  lineinfile:
+    name: "{{ dse_default_dir }}/dse"
+    regexp: '^SOLR_ENABLED='
+    line: "SOLR_ENABLED=1"
+    owner: cassandra
+    group: cassandra
+    mode: 0644
+
+- name: Configure DSE Graph workload type
+  when: graph_enabled|int == 1 and dse_ver_major is version_compare('5.0', '>=')
+  lineinfile:
+    name: "{{ dse_default_dir }}/dse"
+    regexp: '^GRAPH_ENABLED='
+    line: "GRAPH_ENABLED=1"
+    owner: cassandra
+    group: cassandra
+    mode: 0644
+
+- name: Configure cassandra.yaml
+  template:
+    src: "templates/cassandra_{{ dse_ver_major }}.yaml.j2"
+    dest: "{{ dse_config_dir }}/cassandra/cassandra.yaml"
+    owner: cassandra
+    group: cassandra
+    mode: 0644
+
+- name: Configure DC and Rack settings (cassandra-rackdc.properties)
+  template:
+    src: "templates/cassandra-rackdc.properties.j2"
+    dest: "{{ dse_config_dir }}/cassandra/cassandra-rackdc.properties"
+    owner: cassandra
+    group: cassandra
+    mode: 0644
+
+- name: Configure dse.yaml
+  template:
+    src: "templates/dse.yaml.j2"
+    dest: "{{ dse_config_dir }}/dse.yaml"
+    owner: cassandra
+    group: cassandra
+    mode: 0644
+
+- name: Configure DSE metrics collector for prometheus
+  vars:
+    prom_port: 9103
+  template:
+    src: "templates/10-write-prom.conf.j2"
+    dest: "{{ dse_config_dir }}/collectd/10-write-prom.conf"
+    owner: cassandra
+    group: cassandra
+    mode: 0644

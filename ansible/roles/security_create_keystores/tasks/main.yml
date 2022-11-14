@@ -1,0 +1,32 @@
+---
+#EXPECTS: [hosts: localhost] [become: no] [connection: local] in playbook call
+
+# https://docs.datastax.com/en/security/6.8/security/secSetUpSSLCert.html#Creatingakeyandcertificateforeachnode
+# but use PKCS12 instead of JKS
+#- name: Import CA certificate into each node's keystore
+#  command: >
+#    keytool -keystore keystore.jks -alias ca -importcert -file ca.crt -noprompt
+#    -storepass "{{cluster_keystore_password}}" -keypass "{{cluster_keystore_password}}"
+#  args:
+#    chdir: "{{ssl_certs_path}}"
+
+
+# IMPORT PRIVATE KEY: Imports wildcard private key into keystore
+# We need to create pkcs12 file because Keytool cant import external keys otherwise
+- name: Create "{{src_store_type}}" file from cert and key
+  command: >
+    openssl pkcs12 -export -in ca.crt -inkey ca.key
+    -name ca -out dse-server.pem
+    -password "pass:{{cluster_keystore_password}}"
+  args:
+    chdir: "{{ssl_certs_path}}"
+
+- name: Import CA file into each node's keystore
+  command: >
+    keytool -importkeystore -srckeystore dse-server.pem -srcstoretype pkcs12
+    -srcstorepass "{{cluster_keystore_password}}" -srckeypass "{{cluster_keystore_password}}"
+    -destkeystore keystore.jks -alias ca
+    -deststoretype jks
+    -deststorepass "{{cluster_keystore_password}}" -destkeypass "{{cluster_keystore_password}}"
+  args:
+    chdir: "{{ssl_certs_path}}"

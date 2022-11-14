@@ -1,0 +1,7 @@
+---
+# For Debian and Ubuntu distros
+- name: Install OpenJDK Debian/Ubuntu
+  apt:
+    pkg: "{{ open_jdk_deb }}"
+    state: installed
+  when: install_type == 'package' and (ansible_os_family == 'Debian' or ansible_os_family == 'Ubuntu')

@@ -1,0 +1,8 @@
+- hosts: localhost
+  any_errors_fatal: true
+  become: no
+  connection: local
+  roles:
+    - { role: security_create_root_certificate }
+    - { role: security_create_truststores }
+    - { role: security_create_keystores }
