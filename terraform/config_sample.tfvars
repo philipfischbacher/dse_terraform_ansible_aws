@@ -1,0 +1,9 @@
+tag_identifier = [TAG_IDENTIFIER]
+env = [ENV_NAME]
+region = "us-west-2"
+dse_nodes = 6
+tokens = 128
+opsc_nodes = 1
+ssh_key_filename = [SSH_KEY_FILE]
+ansible_user = [SSH_USER_NAME]
+racks_per_dc = 3

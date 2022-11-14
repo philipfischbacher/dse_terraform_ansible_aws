@@ -1,0 +1,14 @@
+# General
+/certs/*
+/credentials/*
+/ref
+
+#Terraform
+**/*.terraform
+*.tfstate*
+*lock.hcl
+terraform/ansible/hosts
+config.tfvars
+
+# Vim
+.sw*

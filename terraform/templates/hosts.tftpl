@@ -1,0 +1,37 @@
+[dse:children]
+dse_analytics
+dse_transactional
+
+[dse_analytics]
+%{ for idx,node in analytics_dc ~}
+${node.public_ip} private_ip=${node.private_ip} seed=%{ if idx < 2 }true%{ else }false%{ endif } dc=analytics rack=rack${ format("%02d", (idx % racks_per_dc) + 1) } vnode=${tokens} initial_token=
+%{ endfor ~}
+
+[dse_transactional]
+%{ for idx,node in transactional_dc ~}
+${node.public_ip} private_ip=${node.private_ip} seed=%{ if idx < 2 }true%{ else }false%{ endif } dc=transactional${ format("%02d", floor(idx / 3) + 1) } rack=rack${ format("%02d", (idx % 3) + 1) } vnode=${tokens} initial_token=
+%{ endfor ~}
+
+[dse:vars]
+cluster_name=backup_cluster
+
+[dse_transactional:vars]
+solr_enabled=0
+spark_enabled=0
+graph_enabled=0
+auto_bootstrap=1
+
+[dse_analytics:vars]
+solr_enabled=0
+spark_enabled=1
+graph_enabled=0
+auto_bootstrap=1
+
+
+[opsc]
+${opsc.public_ip} private_ip=${opsc.private_ip} ansible_user=${ansible_user}
+
+[datastax_agent]
+%{ for node in concat(transactional_dc, analytics_dc) ~}
+${node.public_ip} private_ip=${node.private_ip} opsc_srv_ip=${opsc.private_ip} ansible_user=${ansible_user}
+%{ endfor ~}
