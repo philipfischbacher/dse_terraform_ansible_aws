@@ -16,4 +16,4 @@ ansible/certs/*
 ansible/hosts
 
 # Vim
-.sw*
+*.sw*
