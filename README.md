@@ -3,6 +3,8 @@
 
 ## AWS
 ### Prerequisites
+#### Setup AWS Credentials for Terraform
+https://registry.terraform.io/providers/hashicorp/aws/latest/docs#environment-variables
 
 #### Create a SSH Key .pub file
 1. Create and download a pem file private key from AWS.
