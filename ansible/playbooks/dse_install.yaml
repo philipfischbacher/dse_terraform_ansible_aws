@@ -33,6 +33,12 @@
     - { role: security_distribute_keystores }
     - { role: dse_update_config }
 
+# Configure cqlsh for SSL
+- hosts: dse
+  any_errors_fatal: true
+  roles:
+    - { role: dse_cqlsh_ssl, when: cqlsh_ssl == true }
+
 # Start DSE seed nodes 
 - hosts: dse
   any_errors_fatal: true

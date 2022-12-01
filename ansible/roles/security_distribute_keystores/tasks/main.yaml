@@ -13,3 +13,19 @@
     owner: cassandra
     group: cassandra
     mode: 0644
+
+- name: Copy SSL cert
+  copy:
+    src: "{{ssl_certs_path}}/{{client_cert}}"
+    dest: "{{client_cert_path}}"
+    owner: cassandra
+    group: cassandra
+    mode: 0644
+
+- name: Copy SSL key
+  copy:
+    src: "{{ssl_certs_path}}/{{client_key}}"
+    dest: "{{client_key_path}}"
+    owner: cassandra
+    group: cassandra
+    mode: 0644

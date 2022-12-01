@@ -1,0 +1,12 @@
+#<client.conf>
+[ req ]
+distinguished_name = <CA_D>
+prompt             = no
+output_password    = <rootca-cqlsh_password>
+default_bits       = 2048
+
+[ <CA_DN> ]
+C  = US
+O  = Datastax
+OU = "{{cluster_name}}"
+CN = *.dse

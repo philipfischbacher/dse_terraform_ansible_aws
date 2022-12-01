@@ -1,0 +1,15 @@
+---
+# Display the OS
+- hosts: all
+  any_errors_fatal: true
+  become: true
+  become_method: sudo
+  roles:
+  - { role: display_os }
+
+      
+# Configure cqlsh for SSL
+- hosts: dse
+  any_errors_fatal: true
+  roles:
+    - { role: dse_cqlsh_ssl }

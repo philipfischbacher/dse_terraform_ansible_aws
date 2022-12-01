@@ -1,0 +1,11 @@
+- name: Create .cassandra directory
+  file:
+    path: "~/.cassandra"
+    state: directory
+    mode: 0744
+
+- name: Configure and uploade cqlshrc.ssl to cqlshrc
+  template:
+    src: "templates/cqlshrc.ssl.j2"
+    dest: "~/.cassandra/cqlshrc"
+    mode: 0744

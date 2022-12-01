@@ -56,6 +56,14 @@ variable "opsc_instance_type" {
   default = "m4.large"
 }
 
+#
+# Instance Type for Tester
+#
+variable "tester_instance_type" {
+  type = string
+  default = "m4.large"
+}
+
 
 #variable "instance_role_id" {
 #  type        = string

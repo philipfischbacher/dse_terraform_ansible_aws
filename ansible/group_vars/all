@@ -27,19 +27,35 @@ dse_syslog_dir: /var/log/cassandra
 #  DSE VNode setup
 #
 # default vnode token_num setting for C*
-vnode_token_num: 128
+vnode_token_num: 8
 
 ## DSE cluster name and other configuration items
 #
 cluster_name: backup_cluster
 dse_data_homedir: /data
 metadata_directory: "{{ dse_data_homedir }}/metadata"
-ansible_ssh_private_key_file: [SSH_KEY]
+ansible_ssh_private_key_file: /home/phil/.ssh/phil_aws_keypair.pem
+
+### DCs
+dcs:
+  - name: analytics
+    nodes: 3
+  - name: transactional01
+    nodes: 3
 
 ## DSE Security
 #
+cqlsh_ssl: true
 ssl_certs_path: ../certs
 src_store_type: pkcs12  #pkcs12 or jks
+
+## OS user account
+home_user: ec2-user
+
+## Authentication
+auth_user: cassandra
+auth_password: cassandra
+
 # Encryption settings for truststores / keystores
 #-------------------------------------------------------------------------------
 # Make sure the SSL certificates, keystores, truststores are readable by the user 
@@ -49,9 +65,11 @@ security_group: cassandra
 
 # Cluster security settings set by server_encryption_options 
 # and client_encryption_options in cassandra.yaml
-cluster_keystore_path: "{{ dse_config_dir }}/keystore.jks"
+cluster_keystore: "keystore.jks"
+cluster_keystore_path: "{{ dse_config_dir }}/{{ cluster_keystore }}"
 cluster_keystore_password: "keystore_pass"
-cluster_truststore_path: "{{ dse_config_dir }}/truststore.jks"
+cluster_truststore: "truststore.jks"
+cluster_truststore_path: "{{ dse_config_dir }}/{{ cluster_truststore }}"
 cluster_truststore_password: "truststore_pass"
  
 # Root certificate
@@ -59,6 +77,10 @@ cluster_truststore_password: "truststore_pass"
 # must be an account and group available on localhost
 ssl_certs_path_owner: "{{localhost_owner}}"
 ssl_certs_path_group: "{{localhost_group}}"
+client_key: "ca.key"
+client_cert: "ca.crt"
+client_key_path: "{{ dse_config_dir }}/{{ client_key }}"
+client_cert_path: "{{ dse_config_dir }}/{{ client_cert }}"
 
 ssl_certs_key_size: "2048"
 ssl_certs_days: "365"

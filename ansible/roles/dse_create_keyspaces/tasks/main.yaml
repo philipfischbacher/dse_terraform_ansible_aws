@@ -1,0 +1,26 @@
+---
+#- name: Create keyspace 
+#  remote_user: "{{ home_user }}"
+#  command: >
+#    cqlsh --ssl -e "CREATE KEYSPACE ks1 WITH replication = {'class': 'NetworkTopologyStrategy', 'analytics': 3, 'transactional01': 3};" 
+
+
+#- name: Create keyspace 
+#  remote_user: "{{ home_user }}"
+#  set_fact:
+#    joined_dcs: "{{ dcs | join(',') }}"
+#  command: >
+#    cqlsh --ssl -e "DROP KEYSPACE ks1;"
+#    cqlsh --ssl -e "CREATE KEYSPACE ks1 WITH replication = {'class': 'NetworkTopologyStrategy', {{ joined_dcs }} };"
+
+- name: Build datacenters string 
+#with_items: "{{ dcs }}"
+#  vars:
+#    datacenters: "{{ combine ( {item.name : item.nodes })  }}"
+  debug:
+    msg: "{{ dcs[0].name }}:"
+
+#### Example
+#    cqlsh --ssl -e "CREATE KEYSPACE ks1 WITH replication = {'class': 'NetworkTopologyStrategy', 'analytics':3, 'transactional01':3 };"
+#    {{ item.name: item.nodes }}
+#    datacenters = "'analtyics': 3, 'transactional01': 3"

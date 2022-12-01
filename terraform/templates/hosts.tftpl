@@ -35,3 +35,6 @@ ${opsc.public_ip} private_ip=${opsc.private_ip} ansible_user=${ansible_user}
 %{ for node in concat(transactional_dc, analytics_dc) ~}
 ${node.public_ip} private_ip=${node.private_ip} opsc_srv_ip=${opsc.private_ip} ansible_user=${ansible_user}
 %{ endfor ~}
+
+[tester]
+${tester.public_ip} private_ip=${tester.private_ip} ansible_user=${ansible_user}

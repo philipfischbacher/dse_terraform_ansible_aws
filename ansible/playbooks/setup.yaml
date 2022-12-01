@@ -1,0 +1,6 @@
+---
+- name: Generate the SSL certificates
+  import_playbook: generate_certs.yaml
+
+- name: Install DSE
+  import_playbook: dse_install.yaml

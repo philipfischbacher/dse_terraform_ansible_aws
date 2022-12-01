@@ -19,6 +19,7 @@ variable "instances" {
   type = object({
     dse  = any
     opsc = any
+    tester = any
   })
 }
 

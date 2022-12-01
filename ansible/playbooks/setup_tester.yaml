@@ -1,0 +1,31 @@
+---
+# Display the OS
+- hosts: tester
+  any_errors_fatal: true
+  become: true
+  become_method: sudo
+  roles:
+  - { role: display_os }
+
+# Install cqlsh tool
+- hosts: tester
+  any_errors_fatal: true
+  become: true
+  become_method: sudo
+  roles:
+    - { role: cqlsh_install }
+
+# Configure cqlsh for SSL
+- hosts: tester
+  when: cqlsh_ssl == true
+  any_errors_fatal: true
+  roles:
+    - { role: dse_cqlsh_ssl }
+
+# Install noSqlBench
+- hosts: tester
+  any_errors_fatal: true
+  become: true
+  become_method: sudo
+  roles:
+    - { role: nosqlbench_install }
